@@ -163,8 +163,35 @@ const ExpenseManagement = () => {
     return total - paid;
   };
 
+  const totalExpenses = expenses.length;
+  const totalAmount = expenses.reduce((sum, expense) => sum + expense.totalAmount, 0);
+  const outstandingBalance = expenses.reduce((sum, expense) => sum + expense.balance, 0);
+
   return (
-    <div className="animate-fade-in">
+    <div className="min-h-screen bg-background p-6">
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-foreground mb-2">
+          Educational Institute - Expense Management
+        </h1>
+      </div>
+
+      {/* Summary Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="bg-card rounded-lg border p-6 shadow-sm">
+          <h3 className="text-sm font-medium text-muted-foreground mb-2">Total Expenses</h3>
+          <p className="text-3xl font-bold text-foreground">{totalExpenses}</p>
+        </div>
+        <div className="bg-card rounded-lg border p-6 shadow-sm">
+          <h3 className="text-sm font-medium text-muted-foreground mb-2">Total Amount</h3>
+          <p className="text-3xl font-bold text-foreground">₹{totalAmount.toLocaleString()}</p>
+        </div>
+        <div className="bg-card rounded-lg border p-6 shadow-sm">
+          <h3 className="text-sm font-medium text-muted-foreground mb-2">Outstanding Balance</h3>
+          <p className="text-3xl font-bold text-warning">₹{outstandingBalance.toLocaleString()}</p>
+        </div>
+      </div>
+
       {/* Action Buttons */}
       <div className="flex flex-wrap gap-4 justify-between items-center mb-6">
         <div className="flex gap-4">
@@ -174,10 +201,6 @@ const ExpenseManagement = () => {
           >
             <Plus className="w-4 h-4 mr-2" />
             Add Expense
-          </Button>
-          <Button variant="secondary" className="bg-secondary hover:bg-secondary/80">
-            <FileText className="w-4 h-4 mr-2" />
-            Create Report
           </Button>
         </div>
         <div className="flex gap-4">
@@ -321,8 +344,8 @@ const ExpenseManagement = () => {
       {/* Add Expense Modal */}
       {showAddModal && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fade-in">
-          <div className="card-glass w-full max-w-md animate-slide-up">
-            <div className="flex justify-between items-center mb-6">
+          <div className="bg-card border rounded-lg shadow-lg w-full max-w-md max-h-[90vh] overflow-y-auto animate-slide-up">
+            <div className="sticky top-0 bg-card border-b p-6 flex justify-between items-center">
               <h2 className="text-2xl font-bold">Add Expense</h2>
               <Button 
                 variant="ghost" 
@@ -334,7 +357,7 @@ const ExpenseManagement = () => {
               </Button>
             </div>
             
-            <form onSubmit={handleAddExpense} className="space-y-4">
+            <form onSubmit={handleAddExpense} className="p-6 space-y-4">
               <div>
                 <Label htmlFor="expense-type" className="text-sm font-medium mb-2 block">
                   Expense Type *
@@ -438,20 +461,22 @@ const ExpenseManagement = () => {
                 />
               </div>
 
-              <Button 
-                type="submit" 
-                className="w-full btn-primary ripple"
-                disabled={isLoading}
-              >
-                {isLoading ? (
-                  <div className="flex items-center">
-                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2"></div>
-                    Processing...
-                  </div>
-                ) : (
-                  'Submit'
-                )}
-              </Button>
+              <div className="sticky bottom-0 bg-card border-t p-4 mt-6">
+                <Button 
+                  type="submit" 
+                  className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <div className="flex items-center">
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2"></div>
+                      Processing...
+                    </div>
+                  ) : (
+                    'Submit'
+                  )}
+                </Button>
+              </div>
             </form>
           </div>
         </div>
@@ -460,8 +485,8 @@ const ExpenseManagement = () => {
       {/* Create Expense Modal */}
       {showCreateModal && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fade-in">
-          <div className="card-glass w-full max-w-md animate-slide-up">
-            <div className="flex justify-between items-center mb-6">
+          <div className="bg-card border rounded-lg shadow-lg w-full max-w-md max-h-[90vh] overflow-y-auto animate-slide-up">
+            <div className="sticky top-0 bg-card border-b p-6 flex justify-between items-center">
               <h2 className="text-2xl font-bold">Create Expense</h2>
               <Button 
                 variant="ghost" 
@@ -473,7 +498,7 @@ const ExpenseManagement = () => {
               </Button>
             </div>
             
-            <form onSubmit={handleCreateExpense} className="space-y-4">
+            <form onSubmit={handleCreateExpense} className="p-6 space-y-4">
               <div>
                 <Label className="text-sm font-medium mb-2 block">Expense Type</Label>
                 <Input
@@ -562,23 +587,25 @@ const ExpenseManagement = () => {
                 </div>
               </div>
 
-              <Button 
-                type="submit" 
-                className="w-full btn-primary ripple"
-                disabled={isLoading}
-              >
-                {isLoading ? (
-                  <div className="flex items-center">
-                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2"></div>
-                    Creating...
-                  </div>
-                ) : (
-                  <>
-                    <Check className="w-4 h-4 mr-2" />
-                    Submit Expense
-                  </>
-                )}
-              </Button>
+              <div className="sticky bottom-0 bg-card border-t p-4 mt-6">
+                <Button 
+                  type="submit" 
+                  className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <div className="flex items-center">
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2"></div>
+                      Creating...
+                    </div>
+                  ) : (
+                    <>
+                      <Check className="w-4 h-4 mr-2" />
+                      Submit Expense
+                    </>
+                  )}
+                </Button>
+              </div>
             </form>
           </div>
         </div>

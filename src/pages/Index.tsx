@@ -1,11 +1,10 @@
-import { Layout } from '@/components/Layout';
 import ExpenseManagement from '@/components/ExpenseManagement';
 
 const Index = () => {
   return (
-    <Layout>
+    <div className="min-h-screen bg-background">
       <ExpenseManagement />
-    </Layout>
+    </div>
   );
 };
 
