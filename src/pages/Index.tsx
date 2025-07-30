@@ -1,7 +1,12 @@
+import { Layout } from '@/components/Layout';
 import ExpenseManagement from '@/components/ExpenseManagement';
 
 const Index = () => {
-  return <ExpenseManagement />;
+  return (
+    <Layout>
+      <ExpenseManagement />
+    </Layout>
+  );
 };
 
 export default Index;

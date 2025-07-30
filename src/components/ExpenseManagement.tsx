@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, MessageCircle, Plus, FileDown, Share, X, Check } from 'lucide-react';
+import { Calendar, FileText, Plus, FileDown, Share, X, Check } from 'lucide-react';
 import { format } from 'date-fns';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -164,171 +164,157 @@ const ExpenseManagement = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-muted p-6">
-      <div className="max-w-7xl mx-auto animate-fade-in">
-        {/* Header */}
-        <header className="flex justify-between items-center mb-8">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-primary-light bg-clip-text text-transparent">
-            Accountant
-          </h1>
-          <Button className="btn-accent ripple">
-            <MessageCircle className="w-4 h-4 mr-2" />
-            Chat Support
+    <div className="animate-fade-in">
+      {/* Action Buttons */}
+      <div className="flex flex-wrap gap-4 justify-between items-center mb-6">
+        <div className="flex gap-4">
+          <Button 
+            onClick={() => setShowAddModal(true)}
+            className="bg-primary hover:bg-primary/90 text-primary-foreground"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Add Expense
           </Button>
-        </header>
+          <Button variant="secondary" className="bg-secondary hover:bg-secondary/80">
+            <FileText className="w-4 h-4 mr-2" />
+            Create Report
+          </Button>
+        </div>
+        <div className="flex gap-4">
+          <Button variant="outline" className="border-border hover:bg-accent hover:text-accent-foreground">
+            <Share className="w-4 h-4 mr-2" />
+            Share
+          </Button>
+          <Button variant="outline" className="border-border hover:bg-accent hover:text-accent-foreground">
+            <FileDown className="w-4 h-4 mr-2" />
+            Export
+          </Button>
+        </div>
+      </div>
 
-        {/* Action Buttons */}
-        <div className="flex flex-wrap gap-4 justify-between items-center mb-8">
-          <div className="flex gap-4">
-            <Button 
-              variant="secondary" 
-              className="btn-secondary ripple"
-              onClick={() => setShowAddModal(true)}
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Add Expenses
-            </Button>
-            <Button className="btn-primary ripple">
-              Create
-            </Button>
+      {/* Date Filters */}
+      <div className="bg-card rounded-lg border p-6 mb-6 shadow-sm">
+        <div className="flex flex-wrap gap-4 items-center">
+          <div className="flex items-center gap-2">
+            <Label htmlFor="from-date" className="text-sm font-medium">From:</Label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  className={cn(
+                    "w-[200px] justify-start text-left font-normal",
+                    !fromDate && "text-muted-foreground"
+                  )}
+                >
+                  <Calendar className="mr-2 h-4 w-4" />
+                  {fromDate ? format(fromDate, "PPP") : "mm/dd/yyyy"}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <CalendarComponent
+                  mode="single"
+                  selected={fromDate}
+                  onSelect={setFromDate}
+                  initialFocus
+                  className="pointer-events-auto"
+                />
+              </PopoverContent>
+            </Popover>
           </div>
-          <div className="flex gap-4">
-            <Button variant="outline" className="btn-glass">
-              <Share className="w-4 h-4 mr-2" />
-              Share
-            </Button>
-            <Button variant="outline" className="btn-glass">
-              <FileDown className="w-4 h-4 mr-2" />
-              Download
-            </Button>
+          
+          <div className="flex items-center gap-2">
+            <Label htmlFor="to-date" className="text-sm font-medium">To:</Label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  className={cn(
+                    "w-[200px] justify-start text-left font-normal",
+                    !toDate && "text-muted-foreground"
+                  )}
+                >
+                  <Calendar className="mr-2 h-4 w-4" />
+                  {toDate ? format(toDate, "PPP") : "mm/dd/yyyy"}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <CalendarComponent
+                  mode="single"
+                  selected={toDate}
+                  onSelect={setToDate}
+                  initialFocus
+                  className="pointer-events-auto"
+                />
+              </PopoverContent>
+            </Popover>
           </div>
         </div>
+      </div>
 
-        {/* Date Filters */}
-        <div className="card-premium mb-8">
-          <div className="flex flex-wrap gap-4 items-center">
-            <div className="flex items-center gap-2">
-              <Label htmlFor="from-date" className="text-sm font-medium">From:</Label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className={cn(
-                      "w-[200px] justify-start text-left font-normal",
-                      !fromDate && "text-muted-foreground"
-                    )}
-                  >
-                    <Calendar className="mr-2 h-4 w-4" />
-                    {fromDate ? format(fromDate, "PPP") : "mm/dd/yyyy"}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <CalendarComponent
-                    mode="single"
-                    selected={fromDate}
-                    onSelect={setFromDate}
-                    initialFocus
-                    className="pointer-events-auto"
-                  />
-                </PopoverContent>
-              </Popover>
-            </div>
-            
-            <div className="flex items-center gap-2">
-              <Label htmlFor="to-date" className="text-sm font-medium">To:</Label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className={cn(
-                      "w-[200px] justify-start text-left font-normal",
-                      !toDate && "text-muted-foreground"
-                    )}
-                  >
-                    <Calendar className="mr-2 h-4 w-4" />
-                    {toDate ? format(toDate, "PPP") : "mm/dd/yyyy"}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <CalendarComponent
-                    mode="single"
-                    selected={toDate}
-                    onSelect={setToDate}
-                    initialFocus
-                    className="pointer-events-auto"
-                  />
-                </PopoverContent>
-              </Popover>
-            </div>
-          </div>
-        </div>
-
-        {/* Expenses Table */}
-        <div className="card-premium overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-border">
-                  <th className="text-left p-4 font-semibold text-muted-foreground">NO.</th>
-                  <th className="text-left p-4 font-semibold text-muted-foreground">DATE</th>
-                  <th className="text-left p-4 font-semibold text-muted-foreground">EXPENSE TYPE</th>
-                  <th className="text-left p-4 font-semibold text-muted-foreground">EXPENSE NAME</th>
-                  <th className="text-left p-4 font-semibold text-muted-foreground">DESCRIPTION</th>
-                  <th className="text-left p-4 font-semibold text-muted-foreground">PAYMENT MODE</th>
-                  <th className="text-left p-4 font-semibold text-muted-foreground">AMOUNT</th>
-                  <th className="text-left p-4 font-semibold text-muted-foreground">BALANCE</th>
+      {/* Expenses Table */}
+      <div className="bg-card rounded-lg border shadow-sm overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-border bg-muted/50">
+                <th className="text-left p-4 font-semibold text-muted-foreground">NO.</th>
+                <th className="text-left p-4 font-semibold text-muted-foreground">DATE</th>
+                <th className="text-left p-4 font-semibold text-muted-foreground">EXPENSE TYPE</th>
+                <th className="text-left p-4 font-semibold text-muted-foreground">EXPENSE NAME</th>
+                <th className="text-left p-4 font-semibold text-muted-foreground">DESCRIPTION</th>
+                <th className="text-left p-4 font-semibold text-muted-foreground">PAYMENT MODE</th>
+                <th className="text-left p-4 font-semibold text-muted-foreground">AMOUNT</th>
+                <th className="text-left p-4 font-semibold text-muted-foreground">BALANCE</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredExpenses.length === 0 ? (
+                <tr>
+                  <td colSpan={8} className="text-center p-12 text-muted-foreground">
+                    <div className="animate-scale-in">
+                      {!fromDate && !toDate ? (
+                        <div>
+                          <Calendar className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                          <p className="text-lg">Select date range to view expenses</p>
+                        </div>
+                      ) : (
+                        <div>
+                          <p className="text-lg">No expenses found for the selected date range</p>
+                        </div>
+                      )}
+                    </div>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {filteredExpenses.length === 0 ? (
-                  <tr>
-                    <td colSpan={8} className="text-center p-12 text-muted-foreground">
-                      <div className="animate-scale-in">
-                        {!fromDate && !toDate ? (
-                          <div>
-                            <Calendar className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                            <p className="text-lg">Select date range to view expenses</p>
-                          </div>
-                        ) : (
-                          <div>
-                            <p className="text-lg">No expenses found for the selected date range</p>
-                          </div>
-                        )}
-                      </div>
+              ) : (
+                filteredExpenses.map((expense, index) => (
+                  <tr 
+                    key={expense.id} 
+                    className="border-b border-border hover:bg-muted/30 transition-colors duration-200"
+                  >
+                    <td className="p-4 font-medium">{expense.id}</td>
+                    <td className="p-4">{format(expense.date, 'dd/MM/yyyy')}</td>
+                    <td className="p-4">{expense.expenseType}</td>
+                    <td className="p-4">{expense.expenseName}</td>
+                    <td className="p-4 max-w-xs truncate">{expense.description}</td>
+                    <td className="p-4">
+                      <span className="inline-block px-2 py-1 text-xs rounded-full bg-primary/10 text-primary border border-primary/20">
+                        {expense.paymentMode}
+                      </span>
+                    </td>
+                    <td className="p-4 font-semibold">₹{expense.totalAmount.toLocaleString()}</td>
+                    <td className="p-4">
+                      <span className={cn(
+                        "font-semibold",
+                        expense.balance > 0 ? "text-warning" : "text-success"
+                      )}>
+                        ₹{expense.balance.toLocaleString()}
+                      </span>
                     </td>
                   </tr>
-                ) : (
-                  filteredExpenses.map((expense, index) => (
-                    <tr 
-                      key={expense.id} 
-                      className="border-b border-border hover:bg-muted/50 transition-colors duration-200 animate-stagger"
-                      style={{ animationDelay: `${index * 0.1}s` }}
-                    >
-                      <td className="p-4 font-medium">{expense.id}</td>
-                      <td className="p-4">{format(expense.date, 'dd/MM/yyyy')}</td>
-                      <td className="p-4">{expense.expenseType}</td>
-                      <td className="p-4">{expense.expenseName}</td>
-                      <td className="p-4 max-w-xs truncate">{expense.description}</td>
-                      <td className="p-4">
-                        <span className="inline-block px-2 py-1 text-xs rounded-full bg-primary/10 text-primary">
-                          {expense.paymentMode}
-                        </span>
-                      </td>
-                      <td className="p-4 font-semibold">₹{expense.totalAmount.toLocaleString()}</td>
-                      <td className="p-4">
-                        <span className={cn(
-                          "font-semibold",
-                          expense.balance > 0 ? "text-warning" : "text-success"
-                        )}>
-                          ₹{expense.balance.toLocaleString()}
-                        </span>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
+                ))
+              )}
+            </tbody>
+          </table>
         </div>
       </div>
 
